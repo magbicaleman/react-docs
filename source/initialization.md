@@ -37,6 +37,27 @@ const client = new ApolloClient({
 
 `ApolloClient` has some other options which control the behavior of the client, and we'll see examples of their use throughout this guide.
 
+When interfacing `ApolloClient` with mock data, you'll need to create a `mockNetworkInterfaceWithSchema` to pass into your `ApolloClient` networkInterface option.
+
+If you haven't yet install `apollo-test-utils`
+```bash
+npm i -S apollo-test-utils
+```
+
+```js
+// Source: https://dev-blog.apollodata.com/full-stack-react-graphql-tutorial-582ac8d24e3b#.xuu0gaoc5
+import { makeExecutableSchema, addMockFunctionsToSchema } from 'graphql-tools';
+import { mockNetworkInterfaceWithSchema } from 'apollo-test-utils';
+import { typeDefs } from './schema';
+const schema = makeExecutableSchema({ typeDefs });
+addMockFunctionsToSchema({ schema });
+const mockNetworkInterface = mockNetworkInterfaceWithSchema({ schema });
+
+const client = new ApolloClient({
+  networkInterface: mockNetworkInterface,
+});
+```
+
 <h2 id="creating-provider">Creating a provider</h2>
 
 To connect your client instance to your component tree, use an `ApolloProvider` component. You should be sure to place the `ApolloProvider` somewhere high in your view hierarchy, above any places where you need to access GraphQL data.
